@@ -1,0 +1,11 @@
+{
+  "port": 1337,
+  "mongoose": {
+    "main": "mongodb://localhost/piligram",
+    "chat": "mongodb://localhost/chat"
+  },
+  "security": {
+    "tokenLife" : 3600,
+    "randomLength": 32
+  }
+}

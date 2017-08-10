@@ -7,7 +7,7 @@ var UserModel = require('../libs/mongoDB').UserModel;
 /* GET users listing. */
 router.get('/:id', function(req, res, next) {
 
-    // получить даные по пользователю
+	// получить даные по пользователю
 
 	return UserModel.findById(req.params.id, function (err, user) {
 		if (!err) {
