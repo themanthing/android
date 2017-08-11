@@ -14,6 +14,15 @@
     },
     "paging": {
        "pageSize": 12
+    },
+    "user": {
+      "username": "firstUser",
+      "password": "1234"
+    },
+    "client": {
+      "name": "Android API v1",
+      "clientId": "android",
+      "clientSecret": "SomeRandomCharsAndNumbers"
     }
   }
 }

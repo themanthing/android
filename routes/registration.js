@@ -5,7 +5,7 @@ var log = require('../libs/log')(module);
 var express = require('express');
 var router = express.Router();
 
-router.post('/', function (req, res, next) {
+router.post('/', function (req, res) {
 
 	if (!req.body.command) {
 		// ошибка ничего не передали

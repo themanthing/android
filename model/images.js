@@ -13,4 +13,5 @@ var mongoose = require('mongoose'),
 	}
 });
 
-module.exports = Images;
+module.exports.Schema = Images;
+module.exports.Model = mongoose.model('Images', Images);

@@ -54,4 +54,5 @@ People.path('email').validate(function (v) {
 	return validator.validate(v);
 });
 
-module.exports = mongoose.model('People', People);
+module.exports.Schema = People;
+module.exports.Model = mongoose.model('People', People);

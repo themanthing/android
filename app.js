@@ -9,9 +9,9 @@ require('./libs/auth');
 var log = require('./libs/log')(module);
 var oauth2 = require('./libs/oauth2');
 var index = require('./routes/index');
-var users = require('./routes/users');
+var people = require('./routes/people');
 var travels = require('./routes/travels');
-var messages = require('./routes/users');
+var messages = require('./routes/people');
 var registration = require('./routes/registration');
 var passport = require('passport');
 var methodOverride = require('method-override');
@@ -43,11 +43,12 @@ app.use('/api/registration', registration);
  */
 
 // список пользователей (люди)
-app.use('/api/users', users);
+app.use('/api/people', people);
 // список путешествий (путешествия)
 app.use('/api/travels', travels);
 // список сообщеий
 app.use('/api/messages', messages);
+//require('./generateData');
 /*
 
 /!**

@@ -3,7 +3,8 @@
  * @type {*|Mongoose}
  */
 var mongoose = require('mongoose'),
-	Images = require('./images'),
+	Images = require('./images').Schema,
+	People = require('./people').Schema,
 	Schema = mongoose.Schema,
 	Travels = new Schema({
 		userId: {
@@ -26,7 +27,8 @@ var mongoose = require('mongoose'),
 			type: String,
 			required: true
 		},
-		images: [Images]
+		images: [Images],
+		have_joined: [People]
 	});
 
 // проверка путешествия
