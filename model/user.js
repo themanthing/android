@@ -6,8 +6,8 @@ var mongoose = require('mongoose'),
 	crypto = require('crypto'),
 	config = require('../libs/config'),
 	validator = require("email-validator"),
-	Vacation = require('vacation'),
-	Image = require('images'),
+	Vacation = require('./vacation'),
+	Image = require('./images'),
 	Schema = mongoose.Schema,
 	User = new Schema({
 		username: {
@@ -23,8 +23,8 @@ var mongoose = require('mongoose'),
 			type: Date
 		},
 		// отпуска
-		vacations: [Vacation],
-		avatar: Image,
+		//vacations: [Vacation],
+		//avatar: Image,
 		// как авторизоваля если native значит через нас
 		auth_via: {
 			type: String,

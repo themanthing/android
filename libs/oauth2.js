@@ -4,10 +4,10 @@ var crypto = require('crypto');
 
 var model = process.cwd() + '/model/';
 
-var config = require('config');
-var log = require('log')(module);
+var config = require('./config');
+var log = require('./log')(module);
 
-var db = require('mongoDB');
+var db = require('./mongoDB');
 var User = require(model + 'user');
 var AccessToken = require(model + 'accessToken');
 var RefreshToken = require(model + 'refreshToken');

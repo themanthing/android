@@ -5,11 +5,11 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-
+require('./libs/auth');
 var log = require('./libs/log')(module);
+var oauth2 = require('./libs/oauth2');
 var index = require('./routes/index');
 var users = require('./routes/users');
-var auth = require('./routes/users');
 var travels = require('./routes/travels');
 var messages = require('./routes/users');
 var registration = require('./routes/registration');
@@ -34,7 +34,7 @@ app.use(methodOverride());
 
 app.use('/', index);
 // авторизация проверка токена и т.д.
-app.use('/api/auth', auth);
+app.use('/api/auth', oauth2.token);
 // регистрация пользователя
 app.use('/api/registration', registration);
 

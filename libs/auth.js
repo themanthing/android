@@ -5,7 +5,7 @@ var BearerStrategy = require('passport-http-bearer').Strategy;
 
 var model = process.cwd() + '/model/';
 
-var config = require('config');
+var config = require('./config');
 
 var User = require(model + 'user');
 var Client = require(model + 'client');

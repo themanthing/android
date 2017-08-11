@@ -13,8 +13,9 @@ var mongoose = require('mongoose'),
 		endDate: {
 			type: Date,
 			required: true
-		},
+		}
 
 	});
 
 module.exports = mongoose.model('Vacation', Vacation);
+//module.exports = Vacation;
