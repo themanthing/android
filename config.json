@@ -11,6 +11,9 @@
   "default": {
     "api": {
       "version": "v1"
+    },
+    "paging": {
+       "pageSize": 12
     }
   }
 }
