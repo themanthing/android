@@ -7,5 +7,10 @@
   "security": {
     "tokenLife" : 3600,
     "randomLength": 32
+  },
+  "default": {
+    "api": {
+      "version": "v1"
+    }
   }
 }

@@ -2,7 +2,8 @@
  * логика регистрации пользователя
  */
 var log = require('../libs/log')(module);
-var Client = require('../libs/mongoDB').CientModel;
+var express = require('express');
+var router = express.Router();
 
 router.post('/', function (req, res, next) {
 
@@ -12,15 +13,6 @@ router.post('/', function (req, res, next) {
 		res.statusCode = 400;
 		return res.send({error: "Неккоректный запрос"})
 	}
-
-	var client = new Client({
-
-	});
-
-	client.save(function (err) {
-
-
-	});
 
 	res.statusCode = 201;
 	return res.send();

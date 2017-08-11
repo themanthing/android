@@ -1,6 +1,6 @@
 var express = require('express');
 var path = require('path');
-var favicon = require('serve-favicon');
+//var favicon = require('serve-favicon'); может быть потом когда-то)
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -13,6 +13,8 @@ var auth = require('./routes/users');
 var travels = require('./routes/travels');
 var messages = require('./routes/users');
 var registration = require('./routes/registration');
+var passport = require('passport');
+var methodOverride = require('method-override');
 
 var app = express();
 
@@ -25,15 +27,16 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-//app.use(cookieParser()); нам не нужны куки
+app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(passport.initialize());
+app.use(methodOverride());
 
 app.use('/', index);
 // авторизация проверка токена и т.д.
-app.use('/auth', auth);
+app.use('/api/auth', auth);
 // регистрация пользователя
-app.use('/registration', registration);
+app.use('/api/registration', registration);
 
 /**
  * все запросы на /api должны идти через token
@@ -45,11 +48,12 @@ app.use('/api/users', users);
 app.use('/api/travels', travels);
 // список сообщеий
 app.use('/api/messages', messages);
+/*
 
-/**
+/!**
  * проверяем токен к header если он нужен
  * ну и конечно же проверяет его
- */
+ *!/
 app.use(function (req, res, next) {
 	log.debug('request URL: %s',req.url);
 	if (req.url.indexOf('/api') !== -1){
@@ -62,6 +66,13 @@ app.use(function (req, res, next) {
 		res.statusCode = 403;
 		return res.send({error: 'token required'});
 	}
+	next();
+});
+*/
+
+//logger всех обращений к серверу
+app.use(function (req, res, next) {
+	log.debug('request URL: %s',req.url);
 	next();
 });
 

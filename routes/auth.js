@@ -9,7 +9,7 @@ var log   = require('../libs/log')(module);
 
 
 router.post('/', function () {
-
+	// мы ожидаем от пользователя регистрационный токен
 });
 
 router.post('', function () {
