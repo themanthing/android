@@ -2,9 +2,7 @@ var passport = require('passport');
 var BasicStrategy = require('passport-http').BasicStrategy;
 var ClientPasswordStrategy = require('passport-oauth2-client-password').Strategy;
 var BearerStrategy = require('passport-http-bearer').Strategy;
-
-var model = process.cwd() + '/model/';
-
+var log = require('./log')(module);
 var config = require('./config');
 
 var User = require('../model/user');
@@ -16,17 +14,20 @@ passport.use(new BasicStrategy(
 	function(username, password, done) {
 		Client.findOne({ clientId: username }, function(err, client) {
 			if (err) {
+				log.debug('не удалось найти клиента с id = ' + username);
 				return done(err);
 			}
 
 			if (!client) {
+				log.debug('не удалось найти клиента с id = ' + username);
 				return done(null, false);
 			}
 
 			if (client.clientSecret !== password) {
+				log.debug('Кривой паролик');
 				return done(null, false);
 			}
-
+			log.debug('Клиент найден');
 			return done(null, client);
 		});
 	}
@@ -36,17 +37,20 @@ passport.use(new ClientPasswordStrategy(
 	function(clientId, clientSecret, done) {
 		Client.findOne({ clientId: clientId }, function(err, client) {
 			if (err) {
+				log.debug('не удалось найти клиента с id = ' + clientId);
 				return done(err);
 			}
 
 			if (!client) {
+				log.debug('не удалось найти клиента с id = ' + clientId);
 				return done(null, false);
 			}
 
 			if (client.clientSecret !== clientSecret) {
+				log.debug('пароль не подошол = ' + clientId);
 				return done(null, false);
 			}
-
+			log.debug('Успешно все подключили');
 			return done(null, client);
 		});
 	}

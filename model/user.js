@@ -55,7 +55,6 @@ User.virtual('password')
 	.set(function (password) {
 		this._plainPassword = password;
 		this.salt = crypto.randomBytes(config.get('security:randomLength')).toString('base64');
-		//more secure - this.salt = crypto.randomBytes(128).toString('base64');
 		this.hashedPassword = this.encryptPassword(password);
 	})
 	.get(function () {
@@ -64,7 +63,7 @@ User.virtual('password')
 
 
 User.methods.checkPassword = function (password) {
-	return this.encryptPassword(password) === this.hashedPassword;
+	return this.encryptPassword(password) == this.hashedPassword;
 };
 
 module.exports = mongoose.model('User', User);
