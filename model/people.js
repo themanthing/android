@@ -1,6 +1,5 @@
 var mongoose = require('mongoose'),
 	Image = require('./images'),
-	validator = require("email-validator"),
 	Schema = mongoose.Schema,
 	Vacation = new Schema({
 		// дата начала
@@ -16,27 +15,36 @@ var mongoose = require('mongoose'),
 
 	}),
 	People = new Schema({
+		// ссылка на пользователя
 		userId: {
 			type: String,
 			required: true,
 			unique: true
 		},
+		// имя
 		name: {
 			type: String,
 			required: true
 		},
-		// мыло
-		email: {
-			type: String
+		// фамилия
+		parentName: {
+			type: String,
+			required: true
 		},
 		// дата рождения
 		birthday: {
-			type: Date
+			type: Date,
+			required: true
 		},
 		// отпуска
 		vacations: [Vacation],
 		avatar: {
 			type:Image
+		},
+		sex: {
+			type: String,
+			enum: ['male', 'female'],
+			required: true
 		},
 		// организация
 		organisation: {
@@ -48,11 +56,6 @@ var mongoose = require('mongoose'),
 		}
 		//
 	});
-
-// валидируем e-mail
-People.path('email').validate(function (v) {
-	return validator.validate(v);
-});
 
 module.exports.Schema = People;
 module.exports.Model = mongoose.model('People', People);

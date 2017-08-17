@@ -5,15 +5,27 @@
     "chat": "mongodb://localhost/chat"
   },
   "security": {
-    "tokenLife" : 3600,
+    "tokenLife": 3600,
     "randomLength": 32
+  },
+  "image": {
+    "full": {
+      "quality": 60,
+      "width": 1256,
+      "height": 1256
+    },
+    "thumbnail": {
+      "quality": 60,
+      "width": 256,
+      "height": 256
+    }
   },
   "default": {
     "api": {
       "version": "v1"
     },
     "paging": {
-       "pageSize": 12
+      "pageSize": 12
     },
     "user": {
       "username": "firstUser",
@@ -22,7 +34,7 @@
     "client": {
       "name": "Android API v1",
       "clientId": "android",
-        "clientSecret": "SomeRandomCharsAndNumbers"
+      "clientSecret": "SomeRandomCharsAndNumbers"
     }
   }
 }

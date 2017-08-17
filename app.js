@@ -13,6 +13,7 @@ var people = require('./routes/people');
 var travels = require('./routes/travels');
 var messages = require('./routes/people');
 var registration = require('./routes/registration');
+var images = require('./routes/images');
 var passport = require('passport');
 var methodOverride = require('method-override');
 
@@ -32,44 +33,26 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 app.use(methodOverride());
 
+// это welcome page просто ради фана
 app.use('/', index);
 // авторизация проверка токена и т.д.
 app.use('/api/auth', oauth2.token);
+
 // регистрация пользователя
 app.use('/api/registration', registration);
 
-/**
- * все запросы на /api должны идти через token
- */
-
 // список пользователей (люди)
 app.use('/api/people', people);
+
 // список путешествий (путешествия)
 app.use('/api/travels', travels);
-// список сообщеий
+
+// список сообщеий (это для чата, пока что еще пусто)
 app.use('/api/messages', messages);
-//require('./generateData');
-/*
 
-/!**
- * проверяем токен к header если он нужен
- * ну и конечно же проверяет его
- *!/
-app.use(function (req, res, next) {
-	log.debug('request URL: %s',req.url);
-	if (req.url.indexOf('/api') !== -1){
-		if (!req.headers.token) {
-			log.debug('кто-то нехороший пришол без токена!')
-		}else{
-			// вилидируем токен
-		}
+// работа с картинками
+app.use('/api/images', images);
 
-		res.statusCode = 403;
-		return res.send({error: 'token required'});
-	}
-	next();
-});
-*/
 
 //logger всех обращений к серверу
 app.use(function (req, res, next) {

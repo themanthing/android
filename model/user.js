@@ -5,11 +5,14 @@
 var mongoose = require('mongoose'),
 	crypto = require('crypto'),
 	config = require('../libs/config'),
+	validator = require("email-validator"),
 	Schema = mongoose.Schema,
 	User = new Schema({
+		// по сути это e-mail
 		username: {
 			type: String,
-			required: true
+			required: true,
+			unique: true
 		},
 		// как авторизоваля если native значит через нас
 		auth_via: {
@@ -36,9 +39,11 @@ var mongoose = require('mongoose'),
 		}
 	});
 
-// логин не меньше 5-ти но и не больше 150
+
+
+// это e-mail поэтому валидация e-mail идет
 User.path('username').validate(function (v) {
-	return v.length > 5 && v.length < 150;
+	return validator.validate(v);
 });
 
 User.methods.encryptPassword = function (password) {

@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
 	Images = new Schema({
 	kind: {
 		type: String,
-		enum: ['thumbnail', 'detail'],
+		enum: ['thumbnail', 'full'],
 		required: true
 	},
 	url: {
