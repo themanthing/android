@@ -7,27 +7,35 @@ var mongoose = require('mongoose'),
 	People = require('./people').Schema,
 	Schema = mongoose.Schema,
 	Travels = new Schema({
+		// создатель поездки
 		userId: {
 			type: String,
-			required: true
+			required: true,
+			index: true
 		},
+		// дата начала
 		beginDate: {
 			type: Date,
 			required: true
 		},
+		// дата окончания
 		endDate: {
 			type: Date,
 			required: true
 		},
+		// описание
 		description: {
 			type: String,
 			required: true
 		},
+		// заголовок
 		title: {
 			type: String,
 			required: true
 		},
+		// картинки
 		images: [Images],
+		// кто присоеденился
 		have_joined: [People]
 	});
 

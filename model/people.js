@@ -19,7 +19,8 @@ var mongoose = require('mongoose'),
 		userId: {
 			type: String,
 			required: true,
-			unique: true
+			unique: true,
+			index: true
 		},
 		// имя
 		name: {

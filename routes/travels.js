@@ -8,11 +8,11 @@ const config = require('../libs/config');
 /*
  * получить поездки пользователя
  */
-router.get('/:user_id', passport.authenticate('bearer', {session: false}),
+router.get('/my', passport.authenticate('bearer', {session: false}),
 	function (req, res) {
 		// получить даные по пользователю
 
-		TravelModel.find({userId: req.params.user_id}, function (err, travels) {
+		TravelModel.find({userId: req.user.userId}, function (err, travels) {
 			if (!err) {
 				return res.send(travels);
 			} else {
@@ -25,17 +25,12 @@ router.get('/:user_id', passport.authenticate('bearer', {session: false}),
 	}
 );
 
-// получить 1-ю страницу
-router.get('/', passport.authenticate('bearer', {session: false},
-	function (req, res) {
-		return res.redirect('/api/travels/1');
-	})
-);
 
 /**
  * получить список поездок
  * вернет список путешествий так как все через листания, то пачками отдает
  * типа страница 2 в n записей в ней
+ *
  * TODO выводить урезанный спико для просмотра
  */
 router.get('/:page', passport.authenticate('bearer', {session: false}),
@@ -54,7 +49,7 @@ router.get('/:page', passport.authenticate('bearer', {session: false}),
 		}
 		page--;
 		log.debug('page = ' + page);
-		TravelModel.find()
+		TravelModel.find({'userId':{'$ne': req.user.userId}})
 			.limit(perPage)
 			.skip(perPage * page)
 			.sort({

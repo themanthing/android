@@ -58,18 +58,21 @@ passport.use(new ClientPasswordStrategy(
 
 passport.use(new BearerStrategy(
 	function(accessToken, done) {
+		log.debug('проверка Bearer токена');
 		AccessToken.findOne({ token: accessToken }, function(err, token) {
 
 			if (err) {
+				log.debug('Ошибка токен не найден ' + err.message);
 				return done(err);
 			}
 
 			if (!token) {
+				log.debug('Ошибка токен не найден');
 				return done(null, false);
 			}
 
 			if( Math.round((Date.now()-token.created)/1000) > config.get('security:tokenLife') ) {
-
+				log.debug('Токен протух!');
 				AccessToken.remove({ token: accessToken }, function (err) {
 					if (err) {
 						return done(err);
@@ -79,6 +82,7 @@ passport.use(new BearerStrategy(
 				return done(null, false, { message: 'Token expired' });
 			}
 
+			log.debug('Токен проверен успешно!');
 			User.findById(token.userId, function(err, user) {
 
 				if (err) {
@@ -89,6 +93,7 @@ passport.use(new BearerStrategy(
 					return done(null, false, { message: 'Unknown user' });
 				}
 
+				//log.debug('Пользователь: ' + user);
 				var info = { scope: '*' };
 				done(null, user, info);
 			});
