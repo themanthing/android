@@ -112,10 +112,17 @@ router.post('/avatar', passport.authenticate('bearer', {session: false}),
 
 					if (!err) {
 						return res.sendStatus(201);
+					}else{
+						res.status(500);
+						return res.status({error: "Internal error"})
 					}
 
 				});
 
+			}else{
+				// ошибка сохранения файла!
+				res.status(500);
+				return res.send({error: "Internal error"})
 			}
 
 
@@ -125,7 +132,6 @@ router.post('/avatar', passport.authenticate('bearer', {session: false}),
 	});
 
 function saveImage(file, user_id, type) {
-
 
 	if (path.extname(file).toLowerCase() === '.jpg') {
 		var fileName = md5(file.path + user_id);
@@ -151,7 +157,7 @@ function saveImage(file, user_id, type) {
 		fs.unlink(file.path, function () {
 			log.error("Only .jpg files are allowed!");
 			if (err) {
-				throw new Error('save error');
+				throw new Error("Only .jpg files are allowed!");
 			}
 			return false;
 		});

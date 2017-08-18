@@ -3,7 +3,7 @@ var router = express.Router();
 var passport = require('passport');
 var log = require('../libs/log')(module);
 var TravelModel = require('../model/travel');
-var config = require('../libs/config');
+const config = require('../libs/config');
 
 /*
  * получить поездки пользователя
@@ -22,12 +22,15 @@ router.get('/:user_id', passport.authenticate('bearer', {session: false}),
 			}
 		});
 
-	});
+	}
+);
 
 // получить 1-ю страницу
-router.get('/', function (req, res) {
-	return res.redirect('/api/travels/1');
-});
+router.get('/', passport.authenticate('bearer', {session: false},
+	function (req, res) {
+		return res.redirect('/api/travels/1');
+	})
+);
 
 /**
  * получить список поездок
@@ -41,7 +44,11 @@ router.get('/:page', passport.authenticate('bearer', {session: false}),
 		var page = req.params.page,
 			perPage = config.get('default:paging:pageSize');
 
-		if (page <= 0){
+		if (isNaN(page)) {
+			return res.sendStatus(404);
+		}
+
+		if (page <= 0) {
 			page = 1;
 		}
 		page--;
@@ -54,15 +61,17 @@ router.get('/:page', passport.authenticate('bearer', {session: false}),
 			})
 			.exec(function (err, travels) {
 
-				if (!err){
+				if (!err) {
 					return res.send(travels);
-				}else{
+				} else {
 					// ничего не нашли(
+					log.error('Internal error(%s): %s', res.statusCode, err.message);
 					return res.sendStatus(404);
 				}
 
 			});
-	});
+	}
+);
 
 /**
  * создать запрос на поездку
@@ -96,7 +105,8 @@ router.post('/', passport.authenticate('bearer', {session: false}),
 			}
 		});
 
-	});
+	}
+);
 
 
 module.exports = router;

@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 var log = require('../libs/log')(module);
-var PeopleModel = require('../model/people');
+var PeopleModel = require('../model/people').Model;
+const config = require('../libs/config');
 
 
 /**
@@ -29,7 +30,7 @@ router.get('/:id',
 /**
  * получить свои данные
  */
-router.get('/',
+router.get('/me',
 	passport.authenticate('bearer', {session: false}),
 	function (req, res) {
 
@@ -44,5 +45,43 @@ router.get('/',
 
 	});
 
+/**
+ * получить список пользователей
+ */
+router.get('/:page',
+	passport.authenticate('bearer', {session: false}),
+	function (req, res) {
+
+		log.debug('попросили у нас страничку people с page = ' + req.params.page);
+		var page = req.params.page,
+			perPage = config.get('default:paging:pageSize');
+
+		if (isNaN(page)){
+			return res.sendStatus(404);
+		}
+
+		if (page <= 0){
+			page = 1;
+		}
+		page--;
+		log.debug('page = ' + page);
+
+		PeopleModel.find()
+			.limit(perPage)
+			.skip(perPage * page)
+			.sort({
+				beginDate: 'desc'
+			})
+			.exec(function (err, peoples) {
+				if (!err){
+					return res.send(peoples);
+				}else{
+					// ничего не нашли(
+					log.error('Internal error(%s): %s', res.statusCode, err.message);
+					return res.sendStatus(404);
+				}
+			});
+
+	});
 
 module.exports = router;
