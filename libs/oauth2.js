@@ -85,6 +85,7 @@ aserver.exchange(oauth2orize.exchange.password(function(client, username, passwo
 aserver.exchange(oauth2orize.exchange.refreshToken(function(client, refreshToken, scope, done) {
 
 	RefreshToken.findOne({ token: refreshToken, clientId: client.clientId }, function(err, token) {
+
 		if (err) {
 			return done(err);
 		}

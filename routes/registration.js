@@ -60,7 +60,7 @@ router.post('/',
  * проверка на существование e-mail в БД а то мало ли
  * TODO нужна страница сброса пароля в дальнейшем :)
  */
-router.get('/', passport.authenticate('basic', {session: false}),
+router.post('/email', passport.authenticate('basic', {session: false}),
 	function (req, res) {
 
 		if (!emailValidator.validate(req.body.email)){

@@ -16,6 +16,7 @@ var registration = require('./routes/registration');
 var images = require('./routes/images');
 var passport = require('passport');
 var methodOverride = require('method-override');
+var logout = require('./routes/logout');
 
 var app = express();
 
@@ -35,6 +36,7 @@ app.use(methodOverride());
 
 // это welcome page просто ради фана
 app.use('/', index);
+
 // авторизация проверка токена и т.д.
 app.use('/api/auth', oauth2.token);
 
@@ -53,6 +55,8 @@ app.use('/api/messages', messages);
 // работа с картинками
 app.use('/api/images', images);
 
+// выход из учетки
+app.use('/api/logout', logout);
 
 //logger всех обращений к серверу
 app.use(function (req, res, next) {
