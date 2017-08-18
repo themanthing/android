@@ -12,7 +12,7 @@ var ImageModel = require('../model/images').Model;
 
 /**
  * сохранение картинок
- * картинки я буду складыватьт в папочку по {user_id}/travel/{date}/id.jpg
+ * картинки я буду складыватьт в папочку по {userId}/travel/{date}/id.jpg
  * пока что поддерживает загрузку ТОЛЬКО jpg остальное спасибо не надо)
  */
 router.post('/', passport.authenticate('bearer', {session: false}),
@@ -21,7 +21,7 @@ router.post('/', passport.authenticate('bearer', {session: false}),
 		var tempPath = req.files.file.path;
 
 		if (path.extname(req.files.file.name).toLowerCase() === '.jpg') {
-			var fileName = md5(req.files.file.path + req.user.user_id);
+			var fileName = md5(req.files.file.path + req.user.userId);
 			var targetPath = path.resolve('./images/travel/full/' + fileName);
 			fs.rename(tempPath, targetPath, function (err) {
 				if (err) {
@@ -95,16 +95,16 @@ router.get('/:type/:size/:imageName', passport.authenticate('bearer', {session: 
 router.post('/avatar', passport.authenticate('bearer', {session: false}),
 	function (req, res) {
 
-		log.debug('попытка сохранить/изменить аватар пользователя = ' + req.user.user_id);
+		log.debug('попытка сохранить/изменить аватар пользователя = ' + req.user.userId);
 
-		PeopleModel.findOne({userId: req.user.user_id}, function (err, people) {
+		PeopleModel.findOne({userId: req.user.userId}, function (err, people) {
 
 			// то что пользователя нет это ошибка...
 
-			if (saveImage(req.file, req.user.user_id, 'avatar')) {
+			if (saveImage(req.file, req.user.userId, 'avatar')) {
 				var newAvatar = new ImageModel({
 					kind: "full",
-					url: req.user.user_id
+					url: req.user.userId
 				});
 
 				people.avatar = newAvatar;
@@ -131,12 +131,12 @@ router.post('/avatar', passport.authenticate('bearer', {session: false}),
 
 	});
 
-function saveImage(file, user_id, type) {
+function saveImage(file, userid, type) {
 
 	if (path.extname(file).toLowerCase() === '.jpg') {
-		var fileName = md5(file.path + user_id);
+		var fileName = md5(file.path + userid);
 		if ("avatar" == type) {
-			fileName = user_id;
+			fileName = userid;
 		}
 		var targetPath = path.resolve('./images/' + type + '/full/' + fileName);
 		fs.rename(file.path, targetPath, function (err) {
