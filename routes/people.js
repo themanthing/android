@@ -47,6 +47,7 @@ router.get('/me',
 
 /**
  * получить список пользователей
+ * TODO возвращять урезанный списко, не все поля
  */
 router.get('/:page',
 	passport.authenticate('bearer', {session: false}),
@@ -74,7 +75,13 @@ router.get('/:page',
 			})
 			.exec(function (err, peoples) {
 				if (!err){
-					return res.send(peoples);
+					return res.send(peoples/*.map(function (people) {
+						return {
+							id: people._id,
+							//name: people.title,
+
+						}
+					})*/);
 				}else{
 					// ничего не нашли(
 					log.error('Internal error(%s): %s', res.statusCode, err.message);
@@ -82,6 +89,7 @@ router.get('/:page',
 				}
 			});
 
-	});
+	}
+);
 
 module.exports = router;

@@ -36,6 +36,7 @@ router.get('/', passport.authenticate('bearer', {session: false},
  * получить список поездок
  * вернет список путешествий так как все через листания, то пачками отдает
  * типа страница 2 в n записей в ней
+ * TODO выводить урезанный спико для просмотра
  */
 router.get('/:page', passport.authenticate('bearer', {session: false}),
 	function (req, res) {
@@ -62,7 +63,13 @@ router.get('/:page', passport.authenticate('bearer', {session: false}),
 			.exec(function (err, travels) {
 
 				if (!err) {
-					return res.send(travels);
+					return res.send(travels/*.map(function (travel) {
+						return {
+							id: travel._id,
+							name: travel.title,
+
+						}
+					})*/);
 				} else {
 					// ничего не нашли(
 					log.error('Internal error(%s): %s', res.statusCode, err.message);

@@ -7,6 +7,7 @@ var passport = require('passport');
 var router = express.Router();
 var UserModel = require('../model/user');
 var PeopleModel = require('../model/people').Model;
+const emailValidator = require('email-validator');
 
 // это регистрация пользователя обычного
 router.post('/',
@@ -26,15 +27,15 @@ router.post('/',
 
 		user.save(function (err) {
 
-			if (err){
+			if (err) {
 				log.error('Internal error(%d): %s', res.statusCode, err.message);
 				res.statusCode = 400;
 				return res.send({error: 'Validation error'});
-			}else{
+			} else {
 
 				people.save(function (err) {
 
-					if (err){
+					if (err) {
 						log.error('Internal error(%d): %s', res.statusCode, err.message);
 						user.remove(function (err) {
 							if (err) {
@@ -43,7 +44,7 @@ router.post('/',
 						});
 						res.statusCode = 400;
 						return res.send({error: 'Validation error'});
-					}else{
+					} else {
 						return res.sendStatus(201);
 					}
 
@@ -52,6 +53,33 @@ router.post('/',
 
 		});
 
-	});
+	}
+);
+
+/**
+ * проверка на существование e-mail в БД а то мало ли
+ * TODO нужна страница сброса пароля в дальнейшем :)
+ */
+router.get('/', passport.authenticate('basic', {session: false}),
+	function (req, res) {
+
+		if (!emailValidator.validate(req.body.email)){
+			res.status(400);
+			return res.send({error: 'Некокретный e-mail адресс'});
+		}
+
+		UserModel.findOne({username: req.body.email}, function (err, user) {
+
+			// нет ошибки и есть такой пользователь, то беда
+			if (!err && user){
+				res.status(409); // conflict
+				return res.send({error: "пользователь с таким e-mail уже сещуетсвует"});
+			}else{
+				return res.sendStatus(200);
+			}
+
+		});
+	}
+);
 
 module.exports = router;
