@@ -5,7 +5,6 @@ var log = require('../libs/log')(module);
 var PeopleModel = require('../model/people').Model;
 const config = require('../libs/config');
 
-
 /**
  * получить свои данные
  */
@@ -45,9 +44,19 @@ router.get('/:id',
 	function (req, res) {
 
 		// получить даные по пользователю
-		return PeopleModel.findById(req.params.id, function (err, user) {
+		return PeopleModel.find({userId: req.params.id}, function (err, people) {
 			if (!err) {
-				return res.send(user);
+				return res.send({
+					name: people.name,
+					parentName: people.parentName,
+					userId: people.userId,
+					birthday: people.birthday,
+					vacations: people.vacations,
+					avatar: people.avatar,
+					sex: people.sex,
+					organisation: people.organisation,
+					position: people.position
+				});
 			} else {
 				res.statusCode = 404;
 				log.error('Internal error(%s): %s', res.statusCode, err.message);
@@ -60,7 +69,6 @@ router.get('/:id',
 
 /**
  * получить список пользователей
- * TODO возвращять урезанный списко, не все поля
  */
 router.get('/all/:page',
 	passport.authenticate('bearer', {session: false}),
@@ -88,13 +96,19 @@ router.get('/all/:page',
 			})
 			.exec(function (err, peoples) {
 				if (!err) {
-					return res.send(peoples/*.map(function (people) {
+					return res.send(peoples.map(function (people) {
 						return {
-							id: people._id,
-							//name: people.title,
-
+							name: people.name,
+							parentName: people.parentName,
+							userId: people.userId,
+							birthday: people.birthday,
+							vacations: people.vacations,
+							avatar: people.avatar,
+							sex: people.sex,
+							organisation: people.organisation,
+							position: people.position
 						}
-					})*/);
+					}));
 				} else {
 					// ничего не нашли(
 					log.error('Internal error(%s): %s', res.statusCode, err.message);
