@@ -16,7 +16,17 @@ router.get('/me',
 		PeopleModel.findOne({userId: req.user.userId}, function (err, me) {
 			if (!err) {
 				log.debug('получили пользователя: ' + me);
-				return res.send(me);
+				return res.send({
+					name: me.name,
+					parentName: me.parentName,
+					userId: me.userId,
+					birthday: me.birthday,
+					vacations: me.vacations,
+					avatar: me.avatar,
+					sex: me.sex,
+					organisation: me.organisation,
+					position: me.position
+				});
 			} else {
 				log.debug('аж страшно как-то, свои данные не вижу');
 				return res.sendStatus(403);
