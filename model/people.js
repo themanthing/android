@@ -38,6 +38,7 @@ var mongoose = require('mongoose'),
 		},
 		// отпуска
 		vacations: [Vacation],
+		// аватар
 		avatar: {
 			type:Image
 		},
