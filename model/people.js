@@ -11,6 +11,20 @@ var mongoose = require('mongoose'),
 		endDate: {
 			type: Date,
 			required: true
+		},
+		// сколько дней
+		daysCount: {
+			type: Number,
+			required: true
+		},
+		type: {
+			type: String,
+			required: true
+		},
+		// куда я хочу
+		direction: {
+			type: String,
+			required: true
 		}
 
 	}),
@@ -61,3 +75,4 @@ var mongoose = require('mongoose'),
 
 module.exports.Schema = People;
 module.exports.Model = mongoose.model('People', People);
+module.exports.VacationModel = mongoose.model('Vacation', Vacation);

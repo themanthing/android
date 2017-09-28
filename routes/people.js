@@ -3,6 +3,7 @@ var router = express.Router();
 var passport = require('passport');
 var log = require('../libs/log')(module);
 var PeopleModel = require('../model/people').Model;
+var VacationModel = require('../model/people').VacationModel;
 const config = require('../libs/config');
 
 /**
@@ -32,6 +33,53 @@ router.get('/me',
 			}
 		});
 
+	}
+);
+
+/**
+ * создать отпуск
+ */
+
+router.post('/me/vacation',
+	passport.authenticate('bearer', {session: false}),
+	function (req, res) {
+		log.debug('userId = ' + req.user.userId);
+		PeopleModel.findOne({userId: req.user.userId}, function (err, me) {
+			// добавляем наше поле
+
+			vacation = new VacationModel({
+				beginDate : req.body.beginDate,
+				endDate : req.body.endDate,
+				daysCount: req.body.daysCount,
+				type: req.body.type,
+				direction: req.body.direction
+			});
+
+			log.debug('отпуск = ' + vacation);
+
+			vacation.save(function (err) {
+				if (!err) {
+
+					log.debug("создали отпуск");
+
+					me.vacations.push(vacation);
+					log.debug("пытаемся связать отпуск и пользователя");
+					// сохраняем
+					me.save(function (err) {
+						if (!err) {
+							return res.sendStatus(201);
+						}else{
+							res.status(400);
+							return res.status({error: "Bad request"});
+						}
+					})
+
+				}else{
+					res.status(401);
+					return res.status({error: "Bad request"});
+				}
+			});
+		});
 	}
 );
 
