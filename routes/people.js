@@ -16,12 +16,26 @@ router.get('/me',
 		PeopleModel.findOne({userId: req.user.userId}, function (err, me) {
 			if (!err) {
 				log.debug('получили пользователя: ' + me);
+
+				var vacation = [];
+				me.vacations.forEach(function (t) {
+					//TODO проверка а действует ли отпуск
+					vacation.push({
+						beginDate: t.beginDate,
+						endDate: t.endDate,
+						daysCount: t.daysCount,
+						type: t.type,
+						direction: t.direction,
+						vacationId: t._id
+					})
+				});
+
 				return res.send({
 					name: me.name,
 					parentName: me.parentName,
 					userId: me.userId,
 					birthday: me.birthday,
-					vacations: me.vacations,
+					vacations: vacation,
 					avatar: me.avatar,
 					sex: me.sex,
 					organisation: me.organisation,

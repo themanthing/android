@@ -25,7 +25,7 @@
       "version": "v1"
     },
     "paging": {
-      "pageSize": 12
+      "pageSize": 40
     },
     "user": {
       "username": "firstUser",

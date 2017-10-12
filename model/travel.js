@@ -4,7 +4,6 @@
  */
 var mongoose = require('mongoose'),
 	Images = require('./images').Schema,
-	People = require('./people').Schema,
 	Schema = mongoose.Schema,
 	Travels = new Schema({
 		// создатель поездки
@@ -35,8 +34,8 @@ var mongoose = require('mongoose'),
 		},
 		// картинки
 		images: [Images],
-		// кто присоеденился
-		have_joined: [People]
+		// кто присоеденился id пользователей
+		have_joined: [String]
 	});
 
 // проверка путешествия

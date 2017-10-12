@@ -26,7 +26,6 @@ var mongoose = require('mongoose'),
 			type: String,
 			required: true
 		}
-
 	}),
 	People = new Schema({
 		// ссылка на пользователя

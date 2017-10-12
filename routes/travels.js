@@ -82,15 +82,18 @@ router.post('/', passport.authenticate('bearer', {session: false}),
 	function (req, res) {
 
 		log.debug('Создаем запись');
-		var travel = new TravelModel(JSON.parse(req.body));
-		travel.userId = req.user.user_id;
-
+		log.debug("req = " + req.body);
+		var travel = new TravelModel(req.body);
+		travel.userId = req.user.userId;
+		log.debug('travel = ' + travel);
 		travel.save(function (err) {
 			if (!err) {
 				// создали все ок
 				return res.sendStatus(201);
 			} else {
+				log.error("error", err);
 				if (err.name === 'ValidationError') {
+
 					res.statusCode = 400;
 					res.json({
 						error: 'Validation error'
