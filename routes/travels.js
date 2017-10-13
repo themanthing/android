@@ -14,7 +14,19 @@ router.get('/my', passport.authenticate('bearer', {session: false}),
 
 		TravelModel.find({userId: req.user.userId}, function (err, travels) {
 			if (!err) {
-				return res.send(travels);
+
+				var travel = [];
+				travels.forEach(function (t) {
+					travel.push({
+						id: t._id,
+						beginDate: t.beginDate,
+						endDate: t.endDate,
+						images: t.images,
+						peoples: t.peoples
+					});
+				})
+
+				return res.send(travel);
 			} else {
 				res.statusCode = 404;
 				log.error('Internal error(%s): %s', res.statusCode, err.message);
