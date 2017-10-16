@@ -1,5 +1,4 @@
 var mongoose = require('mongoose'),
-	Image = require('./images'),
 	Schema = mongoose.Schema,
 	Vacation = new Schema({
 		// дата начала
@@ -54,7 +53,7 @@ var mongoose = require('mongoose'),
 		vacations: [Vacation],
 		// аватар
 		avatar: {
-			type:Image
+			type:String
 		},
 		sex: {
 			type: String,

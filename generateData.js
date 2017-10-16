@@ -45,6 +45,7 @@ Client.remove({}, function(err) {
 	});
 });
 
+
 AccessToken.remove({}, function (err) {
 	if (err) {
 		return log.error(err);

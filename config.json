@@ -28,8 +28,8 @@
       "pageSize": 40
     },
     "user": {
-      "username": "firstUser",
-      "password": "1234"
+      "username": "secondUser@user.ru",
+      "password": "12345"
     },
     "client": {
       "name": "Android API v1",

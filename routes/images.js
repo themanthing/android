@@ -8,7 +8,6 @@ var md5 = require('md5');
 const Jimp = require('jimp');
 const config = require('../libs/config');
 var PeopleModel = require('../model/people').Model;
-var ImageModel = require('../model/images').Model;
 
 /**
  * сохранение картинок
@@ -28,9 +27,11 @@ router.post('/', passport.authenticate('bearer', {session: false}),
 					// throw err; ошибка
 					res.status(400);
 					return res.send({error: "error save file"});
+				}else{
+					return res.send({name: fileName});
 				}
 
-				var thumbnailPath = path.resolve('./images/travel/thumbnail/' + fileName);
+				/*var thumbnailPath = path.resolve('./images/travel/thumbnail/' + fileName);
 				Jimp.read(targetPath, function (err, image) {
 					image.resize(config.get("image:thumbnail:width"), config.get("image:thumbnail:height"))
 						.quality(config.get("image:thumbnail:quality"))
@@ -38,7 +39,7 @@ router.post('/', passport.authenticate('bearer', {session: false}),
 					res.status(201);
 					return res.send({name: fileName});
 
-				});
+				});*/
 
 
 			});
@@ -102,12 +103,12 @@ router.post('/avatar', passport.authenticate('bearer', {session: false}),
 			// то что пользователя нет это ошибка...
 
 			if (saveImage(req.file, req.user.userId, 'avatar')) {
-				var newAvatar = new ImageModel({
+				/*var newAvatar = new ImageModel({
 					kind: "full",
 					url: req.user.userId
-				});
+				});*/
 
-				people.avatar = newAvatar;
+				people.avatar = req.user.userId;
 				people.save(function (err) {
 
 					if (!err) {

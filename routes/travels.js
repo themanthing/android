@@ -43,7 +43,7 @@ router.get('/my', passport.authenticate('bearer', {session: false}),
  * вернет список путешествий так как все через листания, то пачками отдает
  * типа страница 2 в n записей в ней
  *
- * TODO выводить урезанный спико для просмотра
+ * TODO выдавать только рабочие путешествия
  */
 router.get('/:page', passport.authenticate('bearer', {session: false}),
 	function (req, res) {

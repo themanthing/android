@@ -3,14 +3,13 @@
  * @type {*|Mongoose}
  */
 var mongoose = require('mongoose'),
-	Images = require('./images').Schema,
 	Schema = mongoose.Schema,
 	Travels = new Schema({
 		// создатель поездки
 		userId: {
 			type: String,
 			required: true,
-			index: true
+			unique: false
 		},
 		// дата начала
 		beginDate: {
@@ -33,9 +32,14 @@ var mongoose = require('mongoose'),
 			required: true
 		},
 		// картинки
-		images: [Images],
+		images: [String],
 		// кто присоеденился id пользователей
-		have_joined: [String]
+		have_joined: [String],
+		// цена
+		price: {
+			type: Number,
+			required: true
+		}
 	});
 
 // проверка путешествия

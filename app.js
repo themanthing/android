@@ -9,6 +9,7 @@ require('./libs/auth');
 var log = require('./libs/log')(module);
 var oauth2 = require('./libs/oauth2');
 var index = require('./routes/index');
+var me = require('./routes/me');
 var people = require('./routes/people');
 var travels = require('./routes/travels');
 var messages = require('./routes/people');
@@ -42,6 +43,9 @@ app.use('/api/auth', oauth2.token);
 
 // регистрация пользователя
 app.use('/api/registration', registration);
+
+// информаиця о пользователе
+app.use('/api/me', me);
 
 // список пользователей (люди)
 app.use('/api/people', people);
