@@ -72,6 +72,13 @@ var mongoose = require('mongoose'),
 		//
 	});
 
+
+// проверка что daysCount все таки больше 0
+Vacation.path('daysCount').validate(function (v) {
+	return v > 0;
+});
+
+
 module.exports.Schema = People;
 module.exports.Model = mongoose.model('People', People);
 module.exports.VacationModel = mongoose.model('Vacation', Vacation);

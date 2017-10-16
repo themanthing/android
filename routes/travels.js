@@ -24,7 +24,7 @@ router.get('/my', passport.authenticate('bearer', {session: false}),
 						images: t.images,
 						peoples: t.peoples
 					});
-				})
+				});
 
 				return res.send(travel);
 			} else {
