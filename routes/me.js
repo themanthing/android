@@ -40,7 +40,8 @@ router.get('/',
 					avatar: me.avatar,
 					sex: me.sex,
 					organisation: me.organisation,
-					position: me.position
+					position: me.position,
+					favorites: me.favorites
 				});
 			} else {
 				log.debug('аж страшно как-то, свои данные не вижу');
@@ -98,13 +99,68 @@ router.post('/vacation',
 	}
 );
 
+
 /**
- * получить список избранного
+ * добавить избранное
+ * //TODO добавить проверку на сущестоввание путешествия
  */
-router.get('/favorite',
+router.post('/favorite',
 	passport.authenticate('bearer', {session: false}),
 	function (req, res) {
+		log.debug('userId = ' + req.user.userId);
+		log.debug('travelID = ' + req.query.travelId);
 
+		PeopleModel.findOne({userId: req.user.userId}, function (err, me) {
+
+			if (!err) {
+				me.favorites.push(req.query.travelId);
+				me.save(function (err) {
+					if (!err)
+						return res.sendStatus(201);
+					else
+						return res.sendStatus(500);
+				});
+			} else {
+				res.status(401);
+				return res.status({error: "Bad request"});
+			}
+
+		});
+	}
+);
+
+/**
+ * удалить избранное
+ */
+router.delete('/favorite',
+	passport.authenticate('bearer', {session: false}),
+	function (req, res) {
+		log.debug('userId = ' + req.user.userId);
+		log.debug('travelID = ' + req.query.travelId);
+
+		PeopleModel.findOne({userId: req.user.userId}, function (err, me) {
+
+			if (!err) {
+				var position = me.favorites.indexOf(req.query.travelId);
+				if (position !== -1) {
+
+					me.favorites.push(req.query.travelId);
+					me.save(function (err) {
+						if (!err)
+							return res.sendStatus(200);
+						else
+							return res.sendStatus(500);
+					});
+				} else {
+					// ну нет такой записи ну и фиг с ним)))
+					return res.sendStatus(200);
+				}
+			} else {
+				res.status(401);
+				return res.status({error: "Bad request"});
+			}
+
+		});
 	}
 );
 

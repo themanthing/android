@@ -67,8 +67,10 @@ var mongoose = require('mongoose'),
 		// должность
 		position: {
 			type: String
-		}
-		//
+		},
+		// список избранного
+		favorites: [String]
+
 	});
 
 
